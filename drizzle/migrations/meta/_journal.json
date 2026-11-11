@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1791472760572,
+      "tag": "0000_create_sreecapital_tables",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1792174162365,
+      "tag": "0001_paypal_sandbox_checkout",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794119185438,
+      "tag": "0002_grant_transactions_select",
+      "breakpoints": true
+    }
+  ]
+}

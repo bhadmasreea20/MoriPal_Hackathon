@@ -1,0 +1,27 @@
+import { Link, useRouterState } from '@tanstack/react-router';
+import { useState, type ReactNode } from 'react';
+import { Activity, LayoutDashboard, ReceiptText, ChartNoAxesCombined, Sparkles, ArrowLeftRight, Building2, ChevronDown, ChevronsUpDown, Bell, Search, Menu, X, CircleHelp, ArrowUpRight, ShieldCheck, Moon, Sun, LogOut } from 'lucide-react';
+import { toggleTheme, useTheme } from '@/lib/theme';
+import { signOut } from '@/lib/auth';
+import { AmbientBackground } from './ambient-background';
+import { Button } from '@/components/ui/button';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+const navigation = [ { label: 'Dashboard', path: '/', icon: LayoutDashboard }, { label: 'Expenses', path: '/expenses', icon: ReceiptText }, { label: 'Capital Decisions', path: '/capital-decisions', icon: ChartNoAxesCombined }, { label: 'AI Advisor', path: '/ai-advisor', icon: Sparkles }, { label: 'Transactions', path: '/transactions', icon: ArrowLeftRight }, { label: 'Business Profile', path: '/business-profile', icon: Building2 } ] as const;
+export function AppShell({ children }: { children: ReactNode }) {
+  const path = useRouterState({ select: s => s.location.pathname });
+  const [open, setOpen] = useState(false);
+  const theme = useTheme();
+  return <div className="app-shell">
+    <AmbientBackground />
+    {open && <div className="sidebar-scrim" onClick={() => setOpen(false)} />}
+    <aside className={`sidebar ${open ? 'sidebar-open' : ''}`}>
+      <Link to="/" className="brand"><span className="brand-symbol"><Activity size={25} strokeWidth={2.5} /></span><span>Mori<span className="text-primary">Pal</span><small>Smarter Capital. Better Healthcare Businesses.</small></span></Link>
+      <Button variant="ghost" size="icon" className="mobile-close" aria-label="Close navigation" onClick={() => setOpen(false)}><X /></Button>
+      <Popover><PopoverTrigger asChild><Button variant="outline" className="business-switch"><span className="business-icon"><Building2 size={19} /></span><span className="text-left"><strong>NovaCare Clinics</strong><small>Healthcare organization</small></span><ChevronsUpDown size={14} /></Button></PopoverTrigger><PopoverContent className="text-sm"><strong>NovaCare Clinics</strong><p className="mt-2 text-muted-foreground">Demo organization · 3 clinic locations</p></PopoverContent></Popover>
+      <p className="nav-caption">WORKSPACE</p>
+      <nav aria-label="Main navigation">{navigation.map(({ label, path: to, icon: Icon }) => <Button asChild variant="ghost" key={to} className={`nav-link ${path === to ? 'nav-active' : ''}`}><Link to={to} onClick={() => setOpen(false)}><Icon size={19} /><span>{label}</span>{label === 'AI Advisor' && <span className="ai-tag">AI</span>}</Link></Button>)}</nav>
+      <div className="sidebar-bottom"><div className="workspace-note"><span className="flex items-center gap-2 font-semibold"><ShieldCheck size={17} /> Smarter Capital.</span><p>Better Healthcare Businesses.</p></div><Popover><PopoverTrigger asChild><Button variant="ghost" className="help-link"><CircleHelp />Help & support<ArrowUpRight className="ml-auto" /></Button></PopoverTrigger><PopoverContent className="text-sm"><strong>MoriPal support</strong><p className="mt-2 text-muted-foreground">You’re exploring a demo workspace. Your data is fictional and no accounts are connected.</p></PopoverContent></Popover><div className="sidebar-user"><span className="avatar">AS</span><span><strong>Alex Sullivan</strong><small>Business owner</small></span><Popover><PopoverTrigger asChild><Button variant="ghost" size="icon" aria-label="Account details"><ChevronsUpDown /></Button></PopoverTrigger><PopoverContent><strong>Alex Sullivan</strong><p className="text-sm text-muted-foreground">NovaCare Clinics · Demo account</p><div className="mt-3"><Button variant="outline" size="sm" onClick={() => void signOut()}><LogOut />Sign out</Button></div></PopoverContent></Popover></div></div>
+    </aside>
+    <div className="app-main"><header className="topbar"><div className="flex items-center gap-3"><Button variant="ghost" size="icon" className="mobile-menu" aria-label="Open navigation" onClick={() => setOpen(true)}><Menu /></Button><span className="breadcrumb">Workspace <span>/</span> <strong>{navigation.find(n => n.path === path)?.label ?? 'Dashboard'}</strong></span></div><div className="topbar-actions"><Button variant="ghost" size="icon" aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'} onClick={toggleTheme}>{theme === 'dark' ? <Sun /> : <Moon />}</Button><span className="demo-badge"><span />Demo workspace</span><Popover><PopoverTrigger asChild><Button variant="ghost" size="icon" aria-label="Notifications" className="notification-button"><Bell /><i /></Button></PopoverTrigger><PopoverContent align="end"><strong>Notifications</strong><p className="mt-3 text-sm">October financial summary is ready.</p><p className="mt-1 text-xs text-muted-foreground">NovaCare Clinics · Today</p></PopoverContent></Popover><span className="topbar-divider" /><span className="avatar avatar-small">AS</span><span className="topbar-name">Alex S.</span><ChevronDown size={14} className="text-muted-foreground" /></div></header><main className="page-content">{children}</main><footer className="app-footer"><span>© 2026 MoriPal</span><span><ShieldCheck size={13} /> Confidential business intelligence <span className="footer-dot">·</span> All amounts in USD</span></footer></div>
+  </div>;
+}
