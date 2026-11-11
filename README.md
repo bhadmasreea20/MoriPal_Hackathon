@@ -79,8 +79,8 @@ AI-generated insights are decision-support information, not audited financial st
 Clone the repository:
 
 ```bash
-git clone https://github.com/bhadmasreea20/MoriPal-Hackathon.git
-cd MoriPal-Hackathon
+git clone https://github.com/bhadmasreea20/MoriPal_Hackathon.git
+cd MoriPal_Hackathon
 ```
 
 Install dependencies:
